@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIMA FES 2026 - 音楽渡世人大集合</title>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;800&family=Montserrat:wght@900&family=Noto+Sans+JP:wght@900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #e60012;
+            --gold: #d4af37;
+            --bg-deep: #0a0a0a;
+            --text-light: #f4f1ea;
+            --card-bg: #1a1a1a;
+            --nav-bg: rgba(10, 10, 10, 0.85);
+        }
+
+        * { box-sizing: border-box; }
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-light); 
+            margin: 0; 
+            font-family: "Shippori Mincho", serif; 
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        /* 豪華なスクロールバー */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-red); border-radius: 10px; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        .bg-decoration {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a0a0a 0%, #000 100%);
+            z-index: -1;
+        }
+
+        /* --- ナビゲーション --- */
+        nav { 
+            background: var(--nav-bg); 
+            backdrop-filter: blur(20px);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        nav .container {
+            display: flex; justify-content: space-between; align-items: center;
+            height: 90px;
+        }
+        
+        /* ロゴ配置用の調整 */
+        .nav-left { display: flex; align-items: center; gap: 30px; }
+        .nav-logo { height: 45px; width: auto; filter: drop-shadow(0 0 5px var(--gold)); cursor: pointer; }
+
+        nav ul { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; }
+        nav a { 
+            color: var(--text-light); text-decoration: none; 
+            font-family: 'Montserrat', sans-serif; font-size: 0.7rem; font-weight: 900;
+            letter-spacing: 0.2em; transition: 0.3s;
+            position: relative; padding: 10px 0;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: var(--primary-red); transition: 0.4s;
+        }
+        nav a:hover { color: var(--primary-red); transform: translateY(-2px); }
+        nav a:hover::after { width: 100%; }
+
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        .nav-sns { display: flex; gap: 12px; }
+        .nav-sns a { font-size: 0.7rem; padding: 0; width: 30px; height: 30px; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        
+        .btn-nav-artist {
+            border: 1px solid var(--gold) !important;
+            color: var(--gold) !important;
+            padding: 8px 18px !important;
+            border-radius: 4px;
+            font-size: 0.6rem !important;
+        }
+        .btn-nav-artist:hover { background: rgba(212, 175, 55, 0.1); }
+        .btn-nav-artist::after { display: none; }
+
+        .btn-nav-ticket {
+            background: var(--primary-red); color: #fff !important;
+            padding: 10px 22px !important; border-radius: 4px;
+            font-size: 0.6rem !important; box-shadow: 0 4px 15px rgba(230, 0, 18, 0.3);
+        }
+        .btn-nav-ticket:hover { background: #fff !important; color: var(--primary-red) !important; }
+        .btn-nav-ticket::after { display: none; }
+
+        /* --- ヒーローセクション --- */
+        .hero {
+            padding-top: 130px; 
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; background: #000; text-align: center;
+            overflow: hidden;
+        }
+
+        .fireworks-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 60%;
+            z-index: 1; pointer-events: none;
+        }
+        .firework {
+            position: absolute; width: 4px; height: 4px; border-radius: 50%;
+            opacity: 0; animation: firework-anim 3s infinite;
+        }
+        .firework:nth-child(1) { left: 20%; top: 30%; background: var(--gold); animation-delay: 0s; }
+        .firework:nth-child(2) { left: 80%; top: 20%; background: var(--primary-red); animation-delay: 1.2s; }
+        .firework:nth-child(3) { left: 50%; top: 15%; background: #fff; animation-delay: 2.5s; }
+
+        @keyframes firework-anim {
+            0% { transform: scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: scale(40); opacity: 0; box-shadow: 0 0 40px 10px currentColor; }
+        }
+
+        .hero-content { z-index: 10; padding: 40px 20px; position: relative; }
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 900; line-height: 1.1;
+            background: linear-gradient(to bottom, #fff 30%, var(--gold) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
+            margin: 0;
+        }
+        .hero-sub { font-size: 1.5rem; letter-spacing: 0.5em; margin-top: 20px; color: var(--primary-red); font-weight: bold; position: relative; }
+        
+        .hero-img-container {
+            width: 100%; max-width: 1000px; margin: 0 auto; line-height: 0; position: relative;
+            background: linear-gradient(to bottom, #000 0%, #000 80%, var(--bg-deep) 100%);
+        }
+        .hero-main-img { width: 100%; height: auto; object-fit: contain; filter: contrast(115%) brightness(95%); position: relative; z-index: 1; }
+        .hero-img-container::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to top, var(--bg-deep) 0%, transparent 26%); z-index: 3;
+        }
+
+        /* セクション共通 */
+        .section-header { position: relative; margin: 100px 0 80px; text-align: center; }
+        .section-bg-text {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: 'Montserrat', sans-serif; font-size: 8rem; font-weight: 900;
+            color: rgba(255, 255, 255, 0.03); white-space: nowrap; z-index: -1;
+        }
+        .section-title { font-size: 3rem; color: var(--gold); border-bottom: 2px solid var(--primary-red); padding-bottom: 10px; display: inline-block; }
+
+        /* ニュース */
+        .news-list { display: grid; gap: 20px; }
+        .news-card {
+            background: linear-gradient(90deg, #1a1a1a 0%, #0a0a0a 100%);
+            padding: 30px; border-left: 5px solid var(--primary-red);
+            display: flex; gap: 40px; align-items: center; transition: 0.4s; cursor: pointer;
+        }
+        .news-card:hover { transform: scale(1.02); background: #222; box-shadow: 0 10px 30px rgba(230, 0, 18, 0.2); }
+        .news-date { font-family: 'Montserrat'; font-weight: 900; color: var(--primary-red); font-size: 1.2rem; }
+
+        /* アーティスト */
+        .artist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        .artist-card { position: relative; height: 500px; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.2); }
+        .artist-img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); }
+        .artist-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 70%);
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; transition: 0.4s;
+        }
+        .artist-card:hover .artist-img { transform: scale(1.1) rotate(2deg); }
+        .artist-card:hover .artist-overlay { background: linear-gradient(to top, var(--primary-red) 0%, transparent 100%); opacity: 0.9; }
+        .artist-name { font-size: 2rem; font-weight: 800; margin: 0; text-shadow: 2px 2px 10px #000; }
+
+        /* チケット */
+        .ticket-premium {
+            background: radial-gradient(circle at top right, #333, #000);
+            border: 2px solid var(--gold); border-radius: 20px; padding: 80px; text-align: center;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.1);
+        }
+        .ticket-item {
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 700px; margin: 0 auto 30px; padding: 20px; border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .price-tag { font-size: 2.5rem; color: var(--gold); font-family: 'Montserrat'; font-weight: 900; }
+
+        /* アクセス */
+        .access-display {
+            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px;
+            background: #111; padding: 30px; border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .map-frame { border: 2px solid var(--gold); position: relative; box-shadow: 0 0 30px rgba(212, 175, 55, 0.1); }
+        .map-frame iframe { width: 100%; height: 450px; border: 0; filter: none; }
+        .route-guide { margin-top: 40px; }
+        .route-item .label {
+            background: var(--primary-red); color: white; padding: 2px 12px;
+            font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 10px;
+        }
+
+        /* Q&A */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid #333; margin-bottom: 10px; }
+        .faq-question {
+            padding: 25px; cursor: pointer; font-weight: bold; color: var(--gold);
+            display: flex; justify-content: space-between; align-items: center; transition: background 0.3s;
+        }
+        .faq-question::after { content: '+'; font-size: 1.5rem; }
+        .faq-item.active .faq-question::after { content: '-'; }
+        .faq-answer { padding: 0 25px 25px; display: none; color: #ffffff; line-height: 1.8; }
+
+        /* フッター */
+        footer { background: #000; padding: 100px 0 50px; margin-top: 150px; border-top: 1px solid var(--gold); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; }
+        .footer-brand img { height: 60px; margin-bottom: 30px; filter: drop-shadow(0 0 10px var(--gold)); cursor: pointer; }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: 1s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1100px) {
+            nav .container { height: auto; padding: 15px 20px; flex-direction: column; gap: 15px; }
+            .hero { padding-top: 220px; }
+            .nav-left { flex-direction: column; gap: 10px; }
+        }
+
+        @media (max-width: 900px) {
+            .access-display { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .ticket-premium { padding: 30px; }
+            .section-bg-text { font-size: 4rem; }
+            nav ul { gap: 12px; flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-decoration"></div>
+
+<nav id="main-nav">
+    <div class="container">
+        <div class="nav-left">
+            <a href="#"><img src="./img/Logo.PNG" alt="SHIMA FES" class="nav-logo"></a>
+            <ul>
+                <li><a href="#info">INFO</a></li>
+                <li><a href="#artist">ARTISTS</a></li>
+                <li><a href="#ticket">TICKET</a></li>
+                <li><a href="#access">ACCESS</a></li>
+                <li><a href="#qanda">Q&A</a></li>
+            </ul>
+        </div>
+        <div class="nav-actions">
+            <div class="nav-sns">
+                <a href="#">X</a>
+                <a href="#">IG</a>
+                <a href="#">FB</a>
+            </div>
+            <a href="#artist" class="btn-nav-artist">ARTISTS</a>
+            <a href="#ticket" class="btn-nav-ticket">BUY TICKET</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="fireworks-container">
+        <div class="firework"></div>
+        <div class="firework"></div>
+        <div class="firework"></div>
+    </div>
+    
+    <div class="hero-content">
+        <h1 class="hero-title">SHIMA FES<br>2026</h1>
+        <div class="hero-sub">音楽渡世人大集合</div>
+    </div>
+    <div class="hero-img-container">
+        <img src="./img/main.jpg" class="hero-main-img" alt="SHIMA FES 2026 メインビジュアル">
+    </div>
+</section>
+
+<section id="info" class="container reveal">
+    <div class="section-header">
+        <div class="section-bg-text">LATEST NEWS</div>
+        <h2 class="section-title">お知らせ</h2>
+    </div>
+    <div class="news-list">
+        <div class="news-card">
+            <div class="news-date">2026.04.27</div>
+            <div class="news-text">本日公開！SHIMA FES 2026 公式サイト・フルリニューアルのお知らせ。</div>
+        </div>
+    </div>
+</section>
+
+<section id="artist" class="container reveal">
+    <div class="section-header">
+        <div class="section-bg-text">LINEUP</div>
+        <h2 class="section-title">出演アーティスト</h2>
+    </div>
+    <div class="artist-grid">
+        <div class="artist-card">
+            <img src="./img/DSC_0053.jpg" class="artist-img" alt="渋さ知らズオーケストラ">
+            <div class="artist-overlay">
+                <p style="color:var(--gold); font-weight:bold;">HEADLINER</p>
+                <h3 class="artist-name">渋さ知らズオーケストラ</h3>
+            </div>
+        </div>
+        <div class="artist-card">
+            <img src="./img/curuseida-zu.PNG" class="artist-img" alt="民謡クルセイダーズ">
+            <div class="artist-overlay">
+                <h3 class="artist-name">民謡クルセイダーズ</h3>
+            </div>
+        </div>
+        <div class="artist-card">
+            <img src="./img/ogp.jpg" class="artist-img" alt="タートルアイランド">
+            <div class="artist-overlay">
+                <h3 class="artist-name">タートルアイランド</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="ticket" class="container reveal">
+    <div class="section-header">
+        <div class="section-bg-text">ADMISSION</div>
+        <h2 class="section-title">入場券</h2>
+    </div>
+    <div class="ticket-premium">
+        <div class="ticket-item">
+            <span style="font-size: 1.5rem; font-weight: bold;">一般大人</span>
+            <span class="price-tag">¥12,000</span>
+        </div>
+        <div class="ticket-item">
+            <span style="font-size: 1.5rem; font-weight: bold;">中高生</span>
+            <span class="price-tag">¥9,000</span>
+        </div>
+        <button style="background:var(--primary-red); color:white; border:none; padding:20px 60px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:40px; border-radius:50px; box-shadow: 0 10px 20px rgba(230,0,18,0.4);">
+            チケットを購入する
+        </button>
+    </div>
+</section>
+
+<section id="access" class="container reveal">
+    <div class="section-header">
+        <div class="section-bg-text">VENUE</div>
+        <h2 class="section-title">開催地</h2>
+    </div>
+    <div class="access-display">
+        <div class="map-frame">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3250.3381654717714!2d135.29700951185362!3d35.44642164272227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5fff8baefac5a5e7%3A0xf11d570452b8ed6a!2z5b-X5pGp5qmf5qKw!5e0!3m2!1sja!2sjp!4v1775542690825!5m2!1sja!2sjp" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>               
+        </div>
+        <div class="venue-info">
+            <h3 style="color: var(--gold); font-size: 2rem; margin-top: 0;">志摩機械株式会社<br>本社内 特設会場</h3>
+            <p style="letter-spacing: 0.1em; color: #ccc;">〒624-0851 京都府舞鶴市字西小字西町114</p>
+            <div class="route-guide">
+                <div class="route-item">
+                    <span class="label">鉄路</span>
+                    <p>JR西舞鶴駅より徒歩約15分。</p>
+                </div>
+                <div class="route-item" style="border-top: 1px solid #333; padding-top: 15px;">
+                    <span class="label">陸路</span>
+                    <p>専用駐車場なし（臨時駐車場チケット必須）。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="qanda" class="container reveal">
+    <div class="section-header">
+        <div class="section-bg-text">Q&A</div>
+        <h2 class="section-title">よくある質問</h2>
+    </div>
+    <div class="faq-container">
+        <div class="faq-item">
+            <div class="faq-question">雨天決行ですか？</div>
+            <div class="faq-answer">雨天決行です。荒天時は本サイトで速報します。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">再入場は可能ですか？</div>
+            <div class="faq-answer">リストバンド装着者に限り、終日可能です。</div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container footer-grid">
+        <div class="footer-brand">
+            <a href="#"><img src="./img/Logo.PNG" alt="SHIMA FES 2026"></a>
+        </div>
+        <div>
+            <h4 style="color:var(--gold);">FOLLOW US</h4>
+            <div style="display:flex; gap:20px; font-family:'Montserrat';">
+                <a href="#" style="color:#fff;">X</a> 
+                <a href="#" style="color:#fff;">IG</a>
+                <a href="#" style="color:#fff;">FB</a>
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <p style="font-size: 0.8rem; color: #ffffff; margin-top: 50px;">© SHIMA FES 2026</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentNode;
+            const answer = q.nextElementSibling;
+            item.classList.toggle('active');
+            answer.style.display = item.classList.contains('active') ? 'block' : 'none';
+        });
+    });
+
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('main-nav');
+        if (window.scrollY > 50) {
+            nav.style.background = 'rgba(15, 0, 0, 0.96)';
+            nav.style.padding = '5px 0';
+            nav.style.borderBottom = '1px solid var(--primary-red)';
+        } else {
+            nav.style.background = 'var(--nav-bg)';
+            nav.style.padding = '0';
+            nav.style.borderBottom = '1px solid rgba(212, 175, 55, 0.3)';
+        }
+    });
+</script>
+</body>
+</html>
