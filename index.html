@@ -52,7 +52,6 @@
             height: 90px;
         }
         
-        /* ロゴ配置用の調整 */
         .nav-left { display: flex; align-items: center; gap: 30px; }
         .nav-logo { height: 45px; width: auto; filter: drop-shadow(0 0 5px var(--gold)); cursor: pointer; }
 
@@ -122,13 +121,12 @@
         .hero-title {
             font-size: clamp(3rem, 10vw, 8rem);
             font-family: 'Noto Sans JP', sans-serif;
-            font-weight: 900; line-height: 1.1;
+            font-weight: 900; line-height: 1.3;
             background: linear-gradient(to bottom, #fff 30%, var(--gold) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5));
             margin: 0;
         }
-        .hero-sub { font-size: 1.5rem; letter-spacing: 0.5em; margin-top: 20px; color: var(--primary-red); font-weight: bold; position: relative; }
         
         .hero-img-container {
             width: 100%; max-width: 1000px; margin: 0 auto; line-height: 0; position: relative;
@@ -159,6 +157,57 @@
         .news-card:hover { transform: scale(1.02); background: #222; box-shadow: 0 10px 30px rgba(230, 0, 18, 0.2); }
         .news-date { font-family: 'Montserrat'; font-weight: 900; color: var(--primary-red); font-size: 1.2rem; }
 
+        /* メッセージセクション */
+        .message-outer-container {
+            position: relative;
+            margin: 100px 0;
+            padding: 100px 0;
+            background-image: url("./img/main.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* パララックス効果 */
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .message-outer-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* 画像を少し暗くして文字のコントラストを稼ぐ */
+            z-index: 1;
+        }
+        .message-glass-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            z-index: 2;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .message-text-content {
+            font-size: 1.1rem;
+            line-height: 2.2;
+            font-weight: 400;
+            color: var(--text-light);
+            text-shadow: 1px 1px 10px rgba(0,0,0,0.8);
+            text-align: justify;
+        }
+        .message-text-content p {
+            margin-bottom: 1.8em;
+        }
+        .message-signature {
+            margin-top: 3em;
+            text-align: right;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
         /* アーティスト */
         .artist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
         .artist-card { position: relative; height: 500px; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.2); }
@@ -169,7 +218,7 @@
         }
         .artist-card:hover .artist-img { transform: scale(1.1) rotate(2deg); }
         .artist-card:hover .artist-overlay { background: linear-gradient(to top, var(--primary-red) 0%, transparent 100%); opacity: 0.9; }
-        .artist-name { font-size: 2rem; font-weight: 800; margin: 0; text-shadow: 2px 2px 10px #000; }
+        .artist-name { font-size: 1.5rem; font-weight: 800; margin: 0; text-shadow: 2px 2px 10px #000; }
 
         /* チケット */
         .ticket-premium {
@@ -183,17 +232,47 @@
         }
         .price-tag { font-size: 2.5rem; color: var(--gold); font-family: 'Montserrat'; font-weight: 900; }
 
-        /* アクセス */
-        .access-display {
-            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px;
-            background: #111; padding: 30px; border: 1px solid rgba(212, 175, 55, 0.2);
+        /* アクセス：縦並びレイアウト */
+        .access-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        .map-frame { border: 2px solid var(--gold); position: relative; box-shadow: 0 0 30px rgba(212, 175, 55, 0.1); }
-        .map-frame iframe { width: 100%; height: 450px; border: 0; filter: none; }
-        .route-guide { margin-top: 40px; }
-        .route-item .label {
-            background: var(--primary-red); color: white; padding: 2px 12px;
-            font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 10px;
+        .access-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .access-info-top {
+            padding: 0 10px;
+        }
+        .access-block {
+            position: relative;
+            background: #111;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+            height: 450px;
+        }
+        .access-block.img-block {
+            height: auto;
+        }
+        .access-block iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+        .access-block img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .label-red {
+            background: var(--primary-red); color: white; padding: 4px 15px;
+            font-size: 0.9rem; font-weight: bold; display: inline-block; width: fit-content;
+            margin-bottom: 8px;
         }
 
         /* Q&A */
@@ -218,15 +297,16 @@
         @media (max-width: 1100px) {
             nav .container { height: auto; padding: 15px 20px; flex-direction: column; gap: 15px; }
             .hero { padding-top: 220px; }
-            .nav-left { flex-direction: column; gap: 10px; }
         }
 
         @media (max-width: 900px) {
-            .access-display { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; text-align: center; }
-            .ticket-premium { padding: 30px; }
             .section-bg-text { font-size: 4rem; }
             nav ul { gap: 12px; flex-wrap: wrap; justify-content: center; }
+            .access-block { height: 350px; }
+            .access-block.img-block { height: auto; }
+            .message-glass-container { padding: 30px; }
+            .message-outer-container { padding: 50px 0; background-attachment: scroll; }
         }
     </style>
 </head>
@@ -264,10 +344,8 @@
         <div class="firework"></div>
         <div class="firework"></div>
     </div>
-    
     <div class="hero-content">
-        <h1 class="hero-title">SHIMA FES<br>2026</h1>
-        <div class="hero-sub">音楽渡世人大集合</div>
+        <h1 class="hero-title">音楽渡世人大集合<br>開催決定！！</h1>
     </div>
     <div class="hero-img-container">
         <img src="./img/main.jpg" class="hero-main-img" alt="SHIMA FES 2026 メインビジュアル">
@@ -283,6 +361,29 @@
         <div class="news-card">
             <div class="news-date">2026.04.27</div>
             <div class="news-text">本日公開！SHIMA FES 2026 公式サイト・フルリニューアルのお知らせ。</div>
+        </div>
+    </div>
+</section>
+
+<section class="container reveal">
+    <div class="section-header">
+        <div class="section-bg-text">MESSAGE</div>
+        <h2 class="section-title">メッセージ</h2>
+    </div>
+    <div class="message-outer-container">
+        <div class="message-glass-container">
+            <div class="message-text-content">
+                <p>海を望み、山を背負う、ここ舞鶴の地。かつて北前船が行き交い、多様な文化と人情が交差したこの港町に、新たな「音の潮流」を生み出したい。その一心で「SHIMA FES」は産声を上げました。</p>
+                <p>我々が掲げるテーマは「音楽渡世人大集合」。</p>
+                <p>これは、単なるアーティストのラインナップを指す言葉ではありません。音楽を愛し、音楽と共に生き、音を携えて各地を旅する、演者、スタッフ、そして何よりここに集うお客様、そのすべてを「音楽渡世人」と呼び、敬意を表したい。日々の暮らしの中で戦い、疲れ、それでもなお「音」を求める我々が、一時の宴のために集う場所。それが「SHIMA FES」です。</p>
+                <p>時代は変わり、音楽の聴かれ方も多様化しました。しかし、目の前で鳴り響く爆音、地を這う低音、そして隣り合う誰かと共有するその一瞬の熱量は、何物にも代えがたい「体験」として、いつの時代も我々の魂を揺さぶり続けます。利便性や効率が優先される現代だからこそ、我々はあえて、この場所に集い、同じ空気を震わせる「不自由で、愛おしい時間」を追求します。</p>
+                <p>2026年。舞鶴の地に、粋な音色と熱き魂が鳴り響きます。<br>
+                古き良き港町の情熱と、最先端の音楽シーンが交錯する、伝説の幕が開くその瞬間を、ぜひ体感してください。</p>
+                <p>すべての音楽渡世人の皆様、舞鶴にて、首を長くしてお待ちしております。</p>
+            </div>
+            <!-- <div class="message-signature">
+                SHIMA FES 2026 実行委員会 代表
+            </div> -->
         </div>
     </div>
 </section>
@@ -322,12 +423,12 @@
     </div>
     <div class="ticket-premium">
         <div class="ticket-item">
-            <span style="font-size: 1.5rem; font-weight: bold;">一般大人</span>
-            <span class="price-tag">¥12,000</span>
+            <span style="font-size: 1.5rem; font-weight: bold;">1days</span>
+            <span class="price-tag">¥＊＊＊＊＊</span>
         </div>
         <div class="ticket-item">
-            <span style="font-size: 1.5rem; font-weight: bold;">中高生</span>
-            <span class="price-tag">¥9,000</span>
+            <span style="font-size: 1.5rem; font-weight: bold;">2days</span>
+            <span class="price-tag">¥＊＊＊＊＊</span>
         </div>
         <button style="background:var(--primary-red); color:white; border:none; padding:20px 60px; font-weight:bold; font-size:1.2rem; cursor:pointer; margin-top:40px; border-radius:50px; box-shadow: 0 10px 20px rgba(230,0,18,0.4);">
             チケットを購入する
@@ -340,22 +441,37 @@
         <div class="section-bg-text">VENUE</div>
         <h2 class="section-title">開催地</h2>
     </div>
-    <div class="access-display">
-        <div class="map-frame">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3250.3381654717714!2d135.29700951185362!3d35.44642164272227!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5fff8baefac5a5e7%3A0xf11d570452b8ed6a!2z5b-X5pGp5qmf5qKw!5e0!3m2!1sja!2sjp!4v1775542690825!5m2!1sja!2sjp" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>               
+    
+    <div class="access-vertical">
+        <div class="access-group">
+            <div class="access-info-top">
+                <span class="label-red">VENUE</span>
+                <h3 style="color: var(--gold); font-size: 1.8rem; margin: 0 0 5px;">志摩機械株式会社 本社内特設会場</h3>
+                <p style="color: #fff; margin: 0;">〒624-0951 京都府舞鶴市字上福井117番地</p>
+            </div>
+            <div class="access-block">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3248.563721345112!2d135.31346417633934!3d35.49033394042841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5ff8cb0a61400613%3A0x6b49e2954e7f8059!2z5b-X5pGp5qmf5qKw77yI5qCq77yJ!5e0!3m2!1sja!2sjp!4v1714200000000!5m2!1sja!2sjp" allowfullscreen="" loading="lazy"></iframe>
+            </div>
         </div>
-        <div class="venue-info">
-            <h3 style="color: var(--gold); font-size: 2rem; margin-top: 0;">志摩機械株式会社<br>本社内 特設会場</h3>
-            <p style="letter-spacing: 0.1em; color: #ccc;">〒624-0851 京都府舞鶴市字西小字西町114</p>
-            <div class="route-guide">
-                <div class="route-item">
-                    <span class="label">鉄路</span>
-                    <p>JR西舞鶴駅より徒歩約15分。</p>
-                </div>
-                <div class="route-item" style="border-top: 1px solid #333; padding-top: 15px;">
-                    <span class="label">陸路</span>
-                    <p>専用駐車場なし（臨時駐車場チケット必須）。</p>
-                </div>
+
+        <div class="access-group">
+            <div class="access-info-top">
+                <span class="label-red">WALKING</span>
+                <h3 style="color: var(--gold); font-size: 1.8rem; margin: 0 0 5px;">JR西舞鶴駅より徒歩約25分</h3>
+                <p style="color: #fff; margin: 0;">駅からの最短ルートはこちらをご確認ください。</p>
+            </div>
+            <div class="access-block img-block">
+                <img src="./img/地図1.jpg" alt="徒歩ルート">
+            </div>
+        </div>
+
+        <div class="access-group">
+            <div class="access-info-top">
+                <span class="label-red">CAR ACCESS</span>
+                <h3 style="color: var(--gold); font-size: 1.8rem; margin: 0 0 5px;">お車でお越しのお客様</h3>
+            </div>
+            <div class="access-block img-block">
+                <img src="./img/地図2.jpg" alt="お車ルート">
             </div>
         </div>
     </div>
